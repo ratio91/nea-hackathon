@@ -19,7 +19,7 @@
     "chai": "^4.2.0",
     "chalk": "^4.1.0",
     "ethereum-waffle": "^3.1.1",
-    "ethers": "^5.0.17",
+    "ethers": "5.3.0",
     "hardhat": "^2.0.11",
     "node-watch": "^0.7.0",
     "qrcode-terminal": "^0.12.0",
@@ -31,12 +31,12 @@
     "test": "hardhat test --network hardhat",
     "compile": "hardhat compile",
     "deploy": "hardhat run scripts/deploy.js",
-    "postdeploy": "hardhat run scripts/publish.js",
     "watch": "node scripts/watch.js",
     "accounts": "hardhat accounts",
     "balance": "hardhat balance",
     "send": "hardhat send",
     "generate": "hardhat generate",
-    "account": "hardhat account"
+    "account": "hardhat account",
+    "mint": "hardhat run scripts/mint.js"
   }
 }

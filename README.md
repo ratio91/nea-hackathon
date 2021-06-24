@@ -1,33 +1,24 @@
-# 🏗 scaffold-eth
+# 🏗 scaffold-eth - Rarible Starter App
 
-> is everything you need to get started building decentralized applications on Ethereum! 🚀 
+> start building an NFT application using the Rarible Protocol! 🚀 
 
 ---
 
 
-#### [ 🏃‍♀️ Quick Start ](https://github.com/austintgriffith/scaffold-eth#%EF%B8%8F-quick-start)
+#### [ 🏃‍♀️ Quick Start ](#quick-start)
 
-#### [ 🔭 Learning Solidity ](https://github.com/austintgriffith/scaffold-eth#-learning-solidity)
+#### [🖼 Minting Your Collectibles](#mint-your-collectibles)
 
-#### [ 📡 Deploy ](https://github.com/austintgriffith/scaffold-eth#-deploy)
+#### [🗂 Rarible Item Indexer](#rarible-item-indexer)
 
-#### [ 📺 Frontend](https://github.com/austintgriffith/scaffold-eth#-frontend)
-- [ 🛰 Providers ](https://github.com/austintgriffith/scaffold-eth#-providers)
-- [ 🖇 Hooks ](https://github.com/austintgriffith/scaffold-eth#-hooks)
-- [ 📦 Components ](https://github.com/austintgriffith/scaffold-eth#-components)
-- [ 🖲 UI Library ](https://github.com/austintgriffith/scaffold-eth#-ui-library)
-- [ ⛑ Helpers ](https://github.com/austintgriffith/scaffold-eth#-helpers)
-- [ 🎚 Extras ](https://github.com/austintgriffith/scaffold-eth#-extras)
--  <B> [ 🛳 Ship it! ](https://github.com/austintgriffith/scaffold-eth#-ship-it) </B>
+#### [📒 Rarible Order Book](#rarible-order-book)
 
-#### [ 🚩 Challenges ](https://github.com/austintgriffith/scaffold-eth#-challenges)
-- [ 🥩 Staking App](https://github.com/austintgriffith/scaffold-eth/tree/challenge-1-decentralized-staking)
-- [ 🏵 Token Vendor ](https://github.com/austintgriffith/scaffold-eth/tree/challenge-2-token-vendor)
+#### [🦥 Lazy Minting](#lazy-minting)
 
-#### [ 👩‍💻 Examples & Tutorials ](https://github.com/austintgriffith/scaffold-eth#-examples-and-tutorials)
-- [ 🎟 Simple NFT ](https://github.com/austintgriffith/scaffold-eth/tree/simple-nft-example)
+#### [💵 Selling a lazy minted item](#selling-a-lazy-minted-item)
 
-#### [ Built with 🏗 scaffold-eth ](https://github.com/austintgriffith/scaffold-eth#-built-with--scaffold-eth)
+
+#### [ Built with 🏗 scaffold-eth ](#built-with-scaffold-eth)
 - [ 🎨 Nifty.ink ](https://nifty.ink) ([code](https://github.com/austintgriffith/scaffold-eth/tree/nifty-ink-dev))
 - [ 🧑‍🎤PunkWallet.io ](https://punkwallet.io/) ([code](https://github.com/austintgriffith/scaffold-eth/tree/punk-wallet))
 
@@ -41,27 +32,28 @@
 
 |-   <B> [ 📠 Legacy Content ](https://github.com/austintgriffith/scaffold-eth#-legacy-content) </B> - | - <B> [ 💬 Support Chat ](https://github.com/austintgriffith/scaffold-eth#-support-chat) </B> -|
 
-[![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/austintgriffith/scaffold-eth)
-
-
 ---
 
-[![ethdenvervideo](https://user-images.githubusercontent.com/2653167/109873369-e2c58c00-7c2a-11eb-8adf-0ec4b8dcae1e.png)](https://youtu.be/33gnKe7ttCc?t=477)
+[![tutorial](https://user-images.githubusercontent.com/4401444/121973242-d1703d80-cd4a-11eb-8a6a-96b103f25ef3.jpeg)](https://youtu.be/MBj3WIj5Wzc![thumbnail])
 
 
 ---
 ---
 ---
 
-# 🏃‍♀️ Quick Start
+# Quick Start
+
+⚠️⚠️ **This application connects to the Rarible contracts & API on Ropsten** ⚠️⚠
 
 required: [Node](https://nodejs.org/dist/latest-v12.x/) plus [Yarn](https://classic.yarnpkg.com/en/docs/install/) and [Git](https://git-scm.com/downloads)
 
 
 ```bash
-git clone https://github.com/austintgriffith/scaffold-eth.git
+git clone https://github.com/ipatka/scaffold-eth.git
 
 cd scaffold-eth
+
+git checkout rarible-starter-app
 ```
 
 ```bash
@@ -76,487 +68,177 @@ yarn start
 
 ```
 
-> in a second terminal window:
-
-```bash
-cd scaffold-eth
-yarn chain
-
-```
-
-> in a third terminal window:
-
-```bash
-cd scaffold-eth
-yarn deploy
-
-```
-
-🔏 Edit your smart contract `YourContract.sol` in `packages/hardhat/contracts`
-
-📝 Edit your frontend `App.jsx` in `packages/react-app/src`
-
-💼 Edit your deployment script `deploy.js` in `packages/hardhat/scripts`
-
 📱 Open http://localhost:3000 to see the app
 
 🏗 scaffold-eth is a hackthon stack for quick product prototyping on Ethereum.
 
 👩‍🔬 This scaffolding leverages state of the art tooling from the ecosystem.
 
+🖼 This fork of scaffold-eth implements the basic features and functionality of the Rarible protocol
+
 🧪 It is a free standing dapp so you can learn by making small changes.
 
 
 > *After installing*, your dev environment should look like this:
 
-![image](https://user-images.githubusercontent.com/2653167/109870279-24ecce80-7c27-11eb-91f3-b2c4febac118.png)
+![Screen Shot 2021-06-14 at 3 45 30 PM](https://user-images.githubusercontent.com/4401444/121971693-55282b00-cd47-11eb-84ad-abe74acfc6d2.png)
 
+> React dev server, Ropsten network, deploy terminal, code IDE, and frontend browser.
 
-> React dev server, HardHat blockchain, deploy terminal, code IDE, and frontend browser.
+# Mint your collectibles
 
-✏️ Make small changes to `YourContract.sol` and watch your app auto update!
+Mint some NFTs that we can use to test out the Rarible protocol.
 
 
-🔁 You can `yarn deploy` any time and get a fresh new contract in the frontend:
+> in a second terminal window:
 
-
-![deploy](https://user-images.githubusercontent.com/2653167/93149199-f8fa8280-f6b2-11ea-9da7-3b26413ec8ab.gif)
-
-
-💵 Each browser has an account in the top right and you can use the faucet (bottom left) to get ⛽️  testnet eth for gas:
-
-
-![faucet](https://user-images.githubusercontent.com/2653167/93150077-6c04f880-f6b5-11ea-9ee8-5c646b5b7afc.gif)
-
-
-
-
-🔨Once you have funds, you can call `setPurpose` on your contract and "write" to the `purpose` storage:
-
-
-![setp](https://user-images.githubusercontent.com/2653167/93229761-2d625300-f734-11ea-9036-44a75429ef0c.gif)
-
-
-Look for the [HardHat](https://hardhat.org) console.log() output in the `yarn chain` terminal:
-
-![image](https://user-images.githubusercontent.com/2653167/93687934-2f534b80-fa7f-11ea-84b2-c0ba99533dc2.png)
-
-> ⚗️ Spend some time tinkering with `YourContract.sol`
-
----
-
-===================================================== [⏫ back to the top ⏫](https://github.com/austintgriffith/scaffold-eth#-scaffold-eth)
-
----
----
-
-# 🔭 Learning Solidity
-
-📕 Read the docs: https://docs.soliditylang.org
-
-📚 Go through each topic from [solidity by example](https://solidity-by-example.org) editing `YourContract.sol` in **🏗 scaffold-eth**
-
-- [Primitive Data Types](https://solidity-by-example.org/primitives/)
-- [Mappings](https://solidity-by-example.org/mapping/)
-- [Structs](https://solidity-by-example.org/structs/)
-- [Modifiers](https://solidity-by-example.org/function-modifier/)
-- [Events](https://solidity-by-example.org/events/)
-- [Inheritance](https://solidity-by-example.org/inheritance/)
-- [Payable](https://solidity-by-example.org/payable/)
-- [Fallback](https://solidity-by-example.org/fallback/)
-
-📧 Learn all the [Solidity globals and units](https://solidity.readthedocs.io/en/v0.6.6/units-and-global-variables.html)
-
-👨‍🏫 Start super simple with a counter: `uint8 public count = 1;`
-
-⬇️ Then a `function dec() public {}` that does a `count = count - 1;`
-
-![image](https://user-images.githubusercontent.com/2653167/93150263-dae25180-f6b5-11ea-94e1-b24ab2a63fa5.png)
-
-
-🔬  What happens when you subtract 1 from 0? Try it out in the app to see what happens!
-
-![underflow](https://user-images.githubusercontent.com/2653167/93688066-46466d80-fa80-11ea-85df-81fbafa46575.gif)
-
-🚽 UNDERFLOW!?! (🚑 [Solidity >0.8.0](https://docs.soliditylang.org/en/v0.8.0/) will catch this!)
-
-🧫 You can iterate and learn as you go. Test your assumptions!
-
-🔐 Global variables like `msg.sender` and `msg.value` are cryptographically backed and can be used to make rules
-
-📝 Keep this [cheat sheet](https://solidity.readthedocs.io/en/v0.7.0/cheatsheet.html?highlight=global#global-variables) handy
-
-⏳ Maybe we could use `block.timestamp` or `block.number` to track time in our contract
-
-🔏 Or maybe keep track of an `address public owner;` then make a rule like `require( msg.sender == owner );` for an important function
-
-🧾 Maybe create a smart contract that keeps track of a `mapping ( address => uint256 ) public balance;`
-
-🏦 It could be like a decentralized bank that you `function deposit() public payable {}` and `withdraw()`
-
-📟 Events are really handy for signaling to the frontend. [Read more about events here.](https://solidity-by-example.org/0.6/events/)
-
-📲 Spend some time in `App.jsx` in `packages/react-app/src` and learn about the 🛰 [Providers](https://github.com/austintgriffith/scaffold-eth#-web3-providers)
-
-⚠️ Big numbers are stored as objects: `formatEther` and `parseEther` (ethers.js) will help with WEI->ETH and ETH->WEI.
-
-🧳 The single page (searchable) [ethers.js docs](https://docs.ethers.io/v5/single-page/) are pretty great too.
-
-🐜 The UI framework `Ant Design` has a [bunch of great components](https://ant.design/components/overview/).
-
-📃 Check the console log for your app to see some extra output from hooks like `useContractReader` and `useEventListener`.
-
-🏗 You'll notice the `<Contract />` component that displays the dynamic form as scaffolding for interacting with your contract.
-
-🔲 Try making a `<Button/>` that calls `writeContracts.YourContract.setPurpose("👋 Hello World")` to explore how your UI might work...
-
-💬 Wrap the call to `writeContracts` with a `tx()` helper that uses BlockNative's [Notify.js](https://www.blocknative.com/notify).
-
-🧬 Next learn about [structs](https://solidity-by-example.org/0.6/structs/) in Solidity.
-
-🗳 Maybe an make an array `YourStructName[] public proposals;` that could call be voted on with `function vote() public {}`
-
-🔭 Your dev environment is perfect for *testing assumptions* and learning by prototyping.
-
-📝 Next learn about the [fallback function](https://solidity-by-example.org/0.6/fallback/)
-
-💸 Maybe add a `receive() external payable {}` so your contract will accept ETH?
-
-🚁 OH! Programming decentralized money! 😎 So rad!
-
----
-
-===================================================== [⏫ back to the top ⏫](https://github.com/austintgriffith/scaffold-eth#-scaffold-eth)
-
----
----
-
-
-# 📡 Deploy
-
-
-🛰 Ready to deploy to a testnet? Change the `defaultNetwork` in `packages/hardhat/hardhat.config.js`
+```bash
+cd scaffold-eth
+yarn generate
+yarn accounts
+```
 
 🔐 Generate a deploy account with `yarn generate` and view it with `yarn account`
 
-💵 Fund your deployer account (pro tip: use an [instant wallet](https://instantwallet.io) to send funds to the QR code from `yarn account`)
+![Screen Shot 2021-06-14 at 3 40 06 PM](https://user-images.githubusercontent.com/4401444/121971731-725cf980-cd47-11eb-84ed-98c02ac1c5df.png)
 
-> Deploy your contract:
+
+💵 Fund your deployer account with some Ropsten Eth from a [faucet](https://faucet.ropsten.be/)
+
+![Screen Shot 2021-06-14 at 3 40 25 PM](https://user-images.githubusercontent.com/4401444/121971709-65400a80-cd47-11eb-9913-4a08a49f2716.png)
+
+
+> Deploy your contract (optional, you can also just use the default one):
 
 ```bash
 yarn deploy
 ```
 
----
+![Screen Shot 2021-06-14 at 3 44 00 PM](https://user-images.githubusercontent.com/4401444/121971753-7a1c9e00-cd47-11eb-8db9-d5e635048c43.png)
 
-===================================================== [⏫ back to the top ⏫](https://github.com/austintgriffith/scaffold-eth#-scaffold-eth)
+✏️  Edit the address in `packages/react-app/src/contract/YourCollectible.address.js` to your deployed contract address
 
 
----
----
-# 📺 Frontend
+💼 Edit the mint script `mint.js` in `packages/hardhat/scripts` to mint to your browser wallet address
 
-> Edit your frontend `App.jsx` in `packages/react-app/src`
 
-📡 Make sure your `targetNetwork` is the same as 👷‍♀️ HardHat's `defaultNetwork` (where you deployed your contracts).
+![Screen Shot 2021-06-14 at 3 46 11 PM](https://user-images.githubusercontent.com/4401444/121971773-87398d00-cd47-11eb-9b0b-b91f7a8e9061.png)
 
-![image](https://user-images.githubusercontent.com/2653167/110500412-68778a80-80b6-11eb-91bd-194d47d62771.png)
 
+> *After minting*, your dev environment should look like this:
 
-🤡 Adjust your debugging settings as needed:
+![Screen Shot 2021-06-14 at 3 46 31 PM](https://user-images.githubusercontent.com/4401444/121971787-91f42200-cd47-11eb-85f9-66410d45c356.png)
 
-![image](https://user-images.githubusercontent.com/2653167/110499550-95776d80-80b5-11eb-8024-287878b180d5.png)
 
+You can visit your new NFTs on the Rarible site by specifying the contract address & tokenID in the URL like this
 
----
+![Screen Shot 2021-06-14 at 3 53 15 PM](https://user-images.githubusercontent.com/4401444/121971823-a59f8880-cd47-11eb-8aff-84a51728d8f9.png)
 
-## 🔏 Providers:
 
-Providers are your connections to different blockchains.
+`https://ropsten.rarible.com/token/0x66f806bf40bfa98f2dac85a85d437895043f2be5:1?tab=owners`
 
-The frontend has three different providers that provide different levels of access to different chains:
 
-`mainnetProvider`: (read only) [Alchemy](https://alchemyapi.io/) or [Infura](https://infura.io/) connection to main [Ethereum](https://ethereum.org/developers/) network (and contracts already deployed like [DAI](https://etherscan.io/address/0x6b175474e89094c44da98b954eedeac495271d0f#code) or [Uniswap](https://etherscan.io/address/0x2a1530c4c41db0b0b2bb646cb5eb1a67b7158667)).
+# Rarible Item Indexer
 
-`localProvider`: local [HardHat](https://hardhat.org) accounts, used to read from _your_ contracts (`.env` file points you at testnet or mainnet)
+Go to the Rarible Item indexer tab and enter the contract address for our YourCollectible contract.
 
-`injectedProvider`: your personal [MetaMask](https://metamask.io/download.html), [WalletConnect](https://walletconnect.org/apps) via [Argent](https://www.argent.xyz/), or other injected wallet (generates [burner-provider](https://www.npmjs.com/package/burner-provider) on page load)
+This tab uses the metadata indexer which is documented here: https://api-reference.rarible.com/#operation/getItemMetaById
 
-![image](https://user-images.githubusercontent.com/2653167/110499705-bc35a400-80b5-11eb-826d-44815b89296c.png)
 
+![Screen Shot 2021-06-14 at 4 04 38 PM](https://user-images.githubusercontent.com/4401444/121971842-b3550e00-cd47-11eb-9a93-1ebaa32e2bc0.png)
 
----
 
-## 🖇 Hooks:
+You can also use the Rarible indexer to get NFT data for an entire collection, all NFTs owned by an address, and more.
 
-![image](https://user-images.githubusercontent.com/2653167/110499834-dcfdf980-80b5-11eb-9d2d-de7046bf5c2b.png)
+# Rarible Order Book
 
+We can create a sell order for one of these NFTs right from the item indexer.
 
-Commonly used Ethereum hooks located in `packages/react-app/src/`:
+First we need to make sure the Rarible Exchange is approved to transfer NFTs on our behalf when they are sold.
 
+Enter the Rarible Transfer Proxy address and hit 'Approve'.
 
-`usePoller(fn, delay)`: runs a function on app load and then on a custom interval
+Rarible Transfer Proxy on Ropsten: 0xf8e4ecac18b65fd04569ff1f0d561f74effaa206
 
-```jsx
-usePoller(() => {
-  //do something cool at start and then every three seconds
-}, 3000);
-```
+![Screen Shot 2021-06-14 at 4 11 37 PM](https://user-images.githubusercontent.com/4401444/121971856-bd770c80-cd47-11eb-9f47-472f53232466.png)
 
-<br/>
 
-`useBalance(address, provider, [pollTime])`: poll for the balance of an address from a provider
+[Example Tx](https://ropsten.etherscan.io/tx/0x288715731a6daac47757968c3dcd89e8af462b87df410cf2a4c5a14ae3c481a4)
 
-```js
-const localBalance = useBalance(address, localProvider);
-```
+Now select 'Sell for ETH' and enter the ETH amount and use the *️⃣ button to format it in wei.
 
-<br/>
+Sign the order to submit it to Rarible.
 
-`useBlockNumber(provider,[pollTime])`: get current block number from a provider
 
-```js
-const blockNumber = useBlockNumber(props.provider);
-```
+![Screen Shot 2021-06-14 at 4 16 10 PM](https://user-images.githubusercontent.com/4401444/121971873-c667de00-cd47-11eb-9fba-18e6874d4ea4.png)
 
-<br/>
 
-`useGasPrice([speed])`: gets current "fast" price from [ethgasstation](https://ethgasstation.info)
 
-```js
-const gasPrice = useGasPrice();
-```
+Now go over to the Rarible Order Indexer tab and find the order you just created by entering the collection address and token ID.
 
-<br/>
+Fill the order, and submit the transaction to the Rarible exchange.
 
-`useExchangePrice(mainnetProvider, [pollTime])`: gets current price of Ethereum on the Uniswap exchange
 
-```js
-const price = useExchangePrice(mainnetProvider);
-```
+![Screen Shot 2021-06-14 at 4 28 29 PM](https://user-images.githubusercontent.com/4401444/121971889-d1227300-cd47-11eb-9964-6592d5ad2388.png)
 
-<br/>
 
-`useContractLoader(provider)`: loads your smart contract interface
+[Example Tx](https://ropsten.etherscan.io/tx/0xabe5433e500a6d3db229fb7630f898c37d30d4422dde69c1ab20a2b84cce2462)
 
-```js
-const readContracts = useContractLoader(localProvider);
-const writeContracts = useContractLoader(injectedProvider);
-```
+Now on the Rarible UI you can see the listing and transfer history!
 
-<br/>
 
-`useContractReader(contracts, contractName, variableName, [pollTime])`: reads a variable from your contract and keeps it in the state
+![Screen Shot 2021-06-14 at 5 20 35 PM](https://user-images.githubusercontent.com/4401444/121971901-d97aae00-cd47-11eb-966b-d8c36bd0e6db.png)
 
-```js
-const title = useContractReader(props.readContracts, contractName, "title");
-const owner = useContractReader(props.readContracts, contractName, "owner");
-```
 
-<br/>
+# Lazy Minting
 
-`useEventListener(contracts, contractName, eventName, [provider], [startBlock])`: listens for events from a smart contract and keeps them in the state
+With Lazy Minting you can defer the gas costs of minting the NFT to the first buyer.
 
-```js
-const ownerUpdates = useEventListener(
-  readContracts,
-  contractName,
-  "UpdateOwner",
-  props.localProvider,
-  1
-);
-```
+For this example we will use the standard Rarible ERC721 contract deployed here: 0xB0EA149212Eb707a1E5FC1D2d3fD318a8d94cf05
 
----
+All you need for lazy minting is the IPFS hash of your NFT content.
 
-## 📦 Components:
+Go to the IPFS upload tab
 
-![image](https://user-images.githubusercontent.com/2653167/110500019-04ed5d00-80b6-11eb-97a4-74068fa90846.png)
+Modify the content, or just hit upload
 
+![Screen Shot 2021-06-14 at 7 39 22 PM](https://user-images.githubusercontent.com/4401444/121972118-5148d880-cd48-11eb-9260-2ced5b4f7660.png)
 
-Your commonly used React Ethereum components located in `packages/react-app/src/`:
 
-<br/>
+Copy the IPFS hash
 
-📬 `<Address />`: A simple display for an Ethereum address that uses a [Blockie](https://www.npmjs.com/package/ethereum-blockies), lets you copy, and links to [Etherescan](https://etherscan.io/).
+Go to the lazy minting tab and enter the hash.
 
-```jsx
-  <Address value={address} />
-  <Address value={address} size="short" />
-  <Address value={address} size="long" blockexplorer="https://blockscout.com/poa/xdai/address/"/>
-  <Address value={address} ensProvider={mainnetProvider}/>
-```
+Press mint
 
-![ensaddress](https://user-images.githubusercontent.com/2653167/80522487-e375fd80-8949-11ea-84fd-0de3eab5cd03.gif)
+![Screen Shot 2021-06-14 at 7 39 35 PM](https://user-images.githubusercontent.com/4401444/121972108-4c842480-cd48-11eb-8474-85f56c23d3f4.png)
 
-<br/>
 
-🖋 `<AddressInput />`: An input box you control with useState for an Ethereum address that uses a [Blockie](https://www.npmjs.com/package/ethereum-blockies) and ENS lookup/display.
 
-```jsx
-  const [ address, setAddress ] = useState("")
-  <AddressInput
-    value={address}
-    ensProvider={props.ensProvider}
-    onChange={(address)=>{
-      setAddress(address)
-    }}
-  />
-```
+Now let's go to the item indexer and see the lazy minted NFT
 
-<br/>
+Copy your contract address and token ID from the lazy minting tab
 
-💵 `<Balance />`: Displays the balance of an address in either dollars or decimal.
+Enter them on the item indexer
 
-```jsx
-<Balance
-  address={address}
-  provider={injectedProvider}
-  dollarMultiplier={price}
-/>
-```
+We can also view the lazy minted item on the Rarible UI!
 
-![balance](https://user-images.githubusercontent.com/2653167/80522919-86c71280-894a-11ea-8f61-70bac7a72106.gif)
+![Screen Shot 2021-06-14 at 7 40 48 PM](https://user-images.githubusercontent.com/4401444/121972194-750c1e80-cd48-11eb-83a6-2345de2f9c7f.png)
 
-<br/>
 
-<br/>
 
-👤 `<Account />`: Allows your users to start with an Ethereum address on page load but upgrade to a more secure, injected provider, using [Web3Modal](https://web3modal.com/). It will track your `address` and `localProvider` in your app's state:
+https://ropsten.rarible.com/token/0xB0EA149212Eb707a1E5FC1D2d3fD318a8d94cf05:52585140568026265337503508601622814624376142828352682734444878603886713110535?tab=history
 
-```jsx
-const [address, setAddress] = useState();
-const [injectedProvider, setInjectedProvider] = useState();
-const price = useExchangePrice(mainnetProvider);
-```
+# Selling a lazy minted item
 
-```jsx
-<Account
-  address={address}
-  setAddress={setAddress}
-  localProvider={localProvider}
-  injectedProvider={injectedProvider}
-  setInjectedProvider={setInjectedProvider}
-  dollarMultiplier={price}
-/>
-```
+Same process as the normal minted item. Enter your contract address & token ID on the order indexer, and click 'fill order'.
 
-![account](https://user-images.githubusercontent.com/2653167/80527048-fdffa500-8950-11ea-9a0f-576be87e4368.gif)
+![Screen Shot 2021-06-14 at 5 59 45 PM](https://user-images.githubusercontent.com/4401444/121971984-05962f00-cd48-11eb-92ed-93e2a96eadb1.png)
 
-> 💡 **Notice**: the `<Account />` component will call `setAddress` and `setInjectedProvider` for you.
 
----
+# Built with scaffold-eth
 
-===================================================== [⏫ back to the top ⏫](https://github.com/austintgriffith/scaffold-eth#-scaffold-eth)
-
----
-
-## 🖲 UI Library
-
-🐜 [Ant.design](https://ant.design/components/button/) is a fantastic UI library with components like the [grids](https://ant.design/components/grid/), [menus](https://ant.design/components/menu/), [dates](https://ant.design/components/date-picker/), [times](https://ant.design/components/time-picker/), [buttons](https://ant.design/components/button/), etc.
-
----
-
-## ⛑ Helpers:
-
-`Transactor`: The transactor returns a `tx()` function to make running and tracking transactions as simple and standardized as possible. We will bring in [BlockNative's Notify](https://www.blocknative.com/notify) library to track our testnet and mainnet transactions.
-
-```js
-const tx = Transactor(props.injectedProvider, props.gasPrice);
-```
-
-Then you can use the `tx()` function to send funds and write to your smart contracts:
-
-```js
-tx({
-  to: readContracts[contractName].address,
-  value: parseEther("0.001"),
-});
-```
-
-```js
-tx(writeContracts["SmartContractWallet"].updateOwner(newOwner));
-```
-
-> ☢️ **Warning**: You will need to update the configuration for `react-app/src/helpers/Transactor.js` to use _your_ [BlockNative dappId](https://www.blocknative.com/notify)
-
----
-
-## 🎚 Extras:
-
-🔑 Create wallet links to your app with `yarn wallet` and `yarn fundedwallet`
-
-⬇️ Installing a new package to your frontend? You need to `cd packages/react-app` and then `yarn add PACKAGE`
-
-⬇️ Installing a new package to your backend? You need to `cd packages/harthat` and then `yarn add PACKAGE`
-
----
-
-## 🛳 Ship it!
-
-You can deploy your app with:
-
-```bash
-
-# packge up the static site:
-
-yarn build
-
-# ship it!
-
-yarn surge
-
-OR
-
-yarn s3
-
-OR
-
-yarn ipfs
-```
-
-🚀 Good luck!
-
----
-
-===================================================== [⏫ back to the top ⏫](https://github.com/austintgriffith/scaffold-eth#-scaffold-eth)
-
----
----
-
-## 🚩 Challenges
-
-1. [ 🥩 Decentralized Staking App ](https://github.com/austintgriffith/scaffold-eth/tree/challenge-1-decentralized-staking)
-
-2. [  🏵 Token Vendor ](https://github.com/austintgriffith/scaffold-eth/tree/challenge-2-token-vendor)
-
----
-
-===================================================== [⏫ back to the top ⏫](https://github.com/austintgriffith/scaffold-eth#-scaffold-eth)
-
----
----
-
-## 📡 Examples and Tutorials
-
-(todo: insert all the cool active branches)
-
-
-| <M> [ tenderly ](https://github.com/austintgriffith/scaffold-eth/tree/tenderly) |
-| --- |
-| [ simple-nft-example ](https://github.com/austintgriffith/scaffold-eth/tree/simple-nft-example) |
-
-
-^^^ ⛏ <b>PR</b> your 🏗 scaffold-eth branch!!! 🙏🙏🙏 ^^^
-
----
-
-===================================================== [⏫ back to the top ⏫](https://github.com/austintgriffith/scaffold-eth#-scaffold-eth)
-
----
----
-
-# 🔨 Built with 🏗 scaffold-eth:
+This starter app was built using Austin Griffith's Scaffold-Eth framework. For more starter apps and inspiration check out the [BuidlGuidl](https://buidlguidl.com/)
 
 [<H3>👩‍🎨 Nifty Ink</H3>](https://nifty.ink)
 
