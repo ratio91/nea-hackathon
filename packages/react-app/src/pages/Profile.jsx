@@ -1,9 +1,33 @@
 import React from "react";
+import { Button, FormGroup, TextField } from "@material-ui/core";
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
 
 export default function Profile() {
   return (
-      <div>
-          <h1>You profile</h1>
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <div className="Box">
+        <h1>You profile</h1>
+        <FormGroup>
+          <TextField id="name" label="Name" />
+          <TextField id="biography" label="Biography" />
+          <KeyboardDatePicker
+            disableToolbar
+            variant="inline"
+            format="MM/dd/yyyy"
+            margin="normal"
+            id="dateOfBirth"
+            label="Date of birth"
+            KeyboardButtonProps={{
+              "aria-label": "change date",
+            }}
+          />
+          <TextField id="artStyle" label="Art style" />
+          <Button variant="contained" color="primary">
+            Submit
+          </Button>
+        </FormGroup>
       </div>
+    </MuiPickersUtilsProvider>
   );
 }
