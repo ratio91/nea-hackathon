@@ -375,3 +375,5 @@ export const NETWORKS = {
     blockExplorer: "https://mumbai-explorer.matic.today/",
   },
 };
+
+export const MenuEntries = { profile: "Profile", artists: "All Artists" };
