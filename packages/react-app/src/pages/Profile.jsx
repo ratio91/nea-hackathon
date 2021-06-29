@@ -1,14 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, FormGroup, TextField } from "@material-ui/core";
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
+import { useProfileApi } from "../hooks";
 
-export default function Profile() {
+export default function Profile({ address }) {
+  const { getProfile, updateProfile } = useProfileApi(address);
+
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <div className="Box">
-        <h1>You profile</h1>
+        <h1>Your profile</h1>
         <FormGroup>
+          <input type="hidden" value={address} />
           <TextField id="name" label="Name" />
           <TextField id="biography" label="Biography" />
           <KeyboardDatePicker

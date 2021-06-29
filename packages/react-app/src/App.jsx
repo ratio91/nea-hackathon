@@ -844,7 +844,7 @@ function App(props) {
             />
           </Route>
           <Route path={`/profile`}>
-            <Profile/>
+            <Profile address={address}/>
           </Route>
           <Route path={`/artists`}>
             <Artists/>
