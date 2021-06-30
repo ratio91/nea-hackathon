@@ -16,7 +16,7 @@ export default function useProfileApi(address) {
 
   const updateProfile = async data => {
     axios
-      .post(apiUrl, data)
+      .post(apiUrl, { ...data, address })
       .then(() => {
         console.log("done updating profile");
       })
