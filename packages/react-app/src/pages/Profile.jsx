@@ -1,28 +1,33 @@
 import React, { useState } from "react";
-import { Button, FormControl, FormGroup, TextField } from "@material-ui/core";
+import {Button, CircularProgress, FormGroup, TextField} from "@material-ui/core";
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { useForm } from "react-hook-form";
 import { useProfileApi } from "../hooks";
 
 export default function Profile({ address }) {
-  const { getProfile, updateProfile } = useProfileApi(address);
-  const { register, handleSubmit, setValue } = useForm();
-
+  const { profile, updateProfile, isLoading } = useProfileApi(address);
+  const { register, handleSubmit, setValue } = useForm({defaultValues: profile});
   const [date, setDate] = useState(new Date());
   const onChangeDate = data => {
     setDate(data);
     setValue("dateOfBirth", data);
   };
+  if (profile && date === new Date()) {
+    setDate(profile.dateOfBirth);
+  }
 
+  if (isLoading) {
+    return <CircularProgress />;
+  }
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <div className="Box">
         <h1>Your profile</h1>
         <form onSubmit={handleSubmit(updateProfile)}>
           <FormGroup>
-            <TextField label="Name" {...register("name")} />
-            <TextField label="Biography" {...register("biography")} />
+            <TextField label="Name" defaultValue={profile.name} {...register("name")} />
+            <TextField label="Biography" defaultValue={profile.biography} {...register("biography")} />
             <KeyboardDatePicker
               disableToolbar
               variant="inline"
@@ -35,7 +40,7 @@ export default function Profile({ address }) {
                 "aria-label": "change date",
               }}
             />
-            <TextField name="artStyle" {...register("artStyle")} label="Art style" />
+            <TextField name="artStyle" defaultValue={profile.artStyle} {...register("artStyle")} label="Art style" />
             <Button type="submit" variant="contained" color="primary">
               Submit
             </Button>
