@@ -10,28 +10,32 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-
+import { Link } from "react-router-dom";
 // placeholder artist data
 const artistData = [
   {
     img: 'Image',
     name: 'Artist 1',
     about: 'Great artist 1',
+    id: 1,
   },
   {
     img: 'Image',
     name: 'Artist 2',
     about: 'Great artist 2',
+    id: 2,
   },
   {
     img: 'Image',
     name: 'Artist 3',
     about: 'Great artist 3',
+    id: 3,
   },
   {
     img: 'Image',
     name: 'Artist 4',
     about: 'Great artist 4',
+    id: 4,
   },
 ];
 
@@ -89,9 +93,9 @@ export default function Artists() {
                 </CardContent>
               </CardActionArea>
               <CardActions>
-                <Button size="small" color="primary">
+                <Link to={`/artists/${artist.id}`} className={classes.menuItem}>
                   Learn More
-                </Button>
+                </Link>
               </CardActions>
             </Card>
           </GridListTile>
