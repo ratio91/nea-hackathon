@@ -48,13 +48,22 @@ const useStyles = makeStyles((theme) => ({
   },
   gridList: {
     width: 500,
-    height: 450,
+    height: "100vh",
+  },
+  gridListTile:{
+
   },
   card: {
     maxWidth: 345,
   },
   media: {
     height: 140,
+  },
+  CardActionsLink: {
+    justifyContent: 'center',
+  },
+  SearchArtists: {
+    justifyContent: 'center',
   },
 }));
 
@@ -65,7 +74,7 @@ export default function Artists() {
     <div className={classes.root}>
       <TextField
         label="Search"
-        style={{ margin: 8 }}
+        className={classes.SearchArtists}
         placeholder="Artist"
         fullWidth
         margin="normal"
@@ -73,27 +82,27 @@ export default function Artists() {
           shrink: true,
         }}
       />
-      <GridList cellHeight={160} className={classes.gridList} cols={2}>
+      <GridList cellHeight={260} className={classes.gridList} cols={2}>
         {artistData.map((artist, index) => (
-          <GridListTile key={index} cols={1}>
+          <GridListTile key={index} className={classes.gridListTile} cols={1}>
             <Card className={classes.card}>
-              <CardActionArea>
-                {/* <CardMedia
-                  className={classes.media}
-                  image={artist.img}
-                  title="Artist img"
-                /> */}
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {artist.name}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary" component="p">
-                    {artist.about}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-              <CardActions>
-                <Link to={`/artists/${artist.id}`} className={classes.menuItem}>
+              {/* <CardActionArea> 
+                    <CardMedia
+                      className={classes.media}
+                      image={artist.img}
+                      title="Artist img"
+                    /> 
+                  </CardActionArea>*/}
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="h2">
+                  {artist.name}
+                </Typography>
+                <Typography variant="body2" color="textSecondary" component="p">
+                  {artist.about}
+                </Typography>
+              </CardContent>
+              <CardActions className={classes.CardActionsLink}>
+                <Link to={`/artists/${artist.id}`} >
                   Learn More
                 </Link>
               </CardActions>
