@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import {Button, CircularProgress, FormGroup, TextField} from "@material-ui/core";
+import React, { useMemo, useState } from "react";
+import { Button, CircularProgress, FormGroup, TextField } from "@material-ui/core";
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { useProfileApi } from "../hooks";
 
 export default function Profile({ address }) {
-  const { profile, updateProfile, isLoading } = useProfileApi(address);
-  const { register, handleSubmit, setValue } = useForm({defaultValues: profile});
+  const { register, reset, control, handleSubmit, setValue } = useForm();
+  const { profile, updateProfile, isLoading } = useProfileApi(address, reset);
   const [date, setDate] = useState(new Date());
   const onChangeDate = data => {
     setDate(data);
@@ -26,8 +26,18 @@ export default function Profile({ address }) {
         <h1>Your profile</h1>
         <form onSubmit={handleSubmit(updateProfile)}>
           <FormGroup>
-            <TextField label="Name" defaultValue={profile.name} {...register("name")} />
-            <TextField label="Biography" defaultValue={profile.biography} {...register("biography")} />
+            <Controller
+              name="name"
+              control={control}
+              defaultValue={profile.name}
+              render={({ field }) => <TextField label="Name" {...field} />}
+            />
+            <Controller
+              name="biography"
+              control={control}
+              defaultValue={profile.biography}
+              render={({ field }) => <TextField label="Biography" {...field} />}
+            />
             <KeyboardDatePicker
               disableToolbar
               variant="inline"
@@ -40,7 +50,12 @@ export default function Profile({ address }) {
                 "aria-label": "change date",
               }}
             />
-            <TextField name="artStyle" defaultValue={profile.artStyle} {...register("artStyle")} label="Art style" />
+            <Controller
+              name="artStyle"
+              control={control}
+              defaultValue={profile.artStyle}
+              render={({ field }) => <TextField label="Art style" {...field} />}
+            />
             <Button type="submit" variant="contained" color="primary">
               Submit
             </Button>

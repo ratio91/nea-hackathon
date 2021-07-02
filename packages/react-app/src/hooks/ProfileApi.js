@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-export default function useProfileApi(address) {
+export default function useProfileApi(address, reset) {
   const [profile, setProfile] = useState({});
   const [isLoading, setLoading] = useState(false);
   const apiUrl = `${process.env.REACT_APP_API_BASEURL}user/`;
@@ -11,6 +11,7 @@ export default function useProfileApi(address) {
       .get(`${apiUrl}${address}`)
       .then(response => {
         setProfile(response.data /* || { name: "", biography: "", dateOfBirth: new Date(), artStyle: "" })*/);
+        reset(response.data);
         setLoading(false);
       })
       .catch(error => {
@@ -21,14 +22,8 @@ export default function useProfileApi(address) {
 
   const updateProfile = async data => {
     setLoading(true);
-    const profileData = {
-      name: data.name || profile.name,
-      biography: data.biography || profile.biography,
-      dateOfBirth: data.dateOfBirth || profile.dateOfBirth,
-      artStyle: data.artStyle || profile.artStyle,
-    };
     axios
-      .post(apiUrl, { ...profileData, id: address /*, dateOfBirth: data.dateOfBirth.toISOString().substr(0, 10) */ })
+      .post(apiUrl, { ...data, id: address /*, dateOfBirth: data.dateOfBirth.toISOString().substr(0, 10) */ })
       .then(() => {
         console.log("done updating profile");
         getProfile();
