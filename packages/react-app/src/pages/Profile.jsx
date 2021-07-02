@@ -7,15 +7,12 @@ import { useProfileApi } from "../hooks";
 
 export default function Profile({ address }) {
   const { register, reset, control, handleSubmit, setValue } = useForm();
-  const { profile, updateProfile, isLoading } = useProfileApi(address, reset);
   const [date, setDate] = useState(new Date());
+  const { profile, updateProfile, isLoading } = useProfileApi(address, reset, setDate);
   const onChangeDate = data => {
     setDate(data);
     setValue("dateOfBirth", data);
   };
-  if (profile && date === new Date()) {
-    setDate(profile.dateOfBirth);
-  }
 
   if (isLoading) {
     return <CircularProgress />;

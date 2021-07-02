@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-export default function useProfileApi(address, reset) {
+export default function useProfileApi(address, reset, setDate) {
   const [profile, setProfile] = useState({});
   const [isLoading, setLoading] = useState(false);
   const apiUrl = `${process.env.REACT_APP_API_BASEURL}user/`;
@@ -11,7 +11,8 @@ export default function useProfileApi(address, reset) {
       .get(`${apiUrl}${address}`)
       .then(response => {
         setProfile(response.data /* || { name: "", biography: "", dateOfBirth: new Date(), artStyle: "" })*/);
-        reset(response.data);
+        if (reset) reset(response.data);
+        if (response.data && setDate) setDate(response.data.dateOfBirth);
         setLoading(false);
       })
       .catch(error => {

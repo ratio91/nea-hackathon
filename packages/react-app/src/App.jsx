@@ -41,6 +41,7 @@ import {
 import { matchSellOrder, prepareMatchingOrder } from "./rarible/createOrders";
 import Profile from "./pages/Profile";
 import Artists from "./pages/Artists";
+import ArtistDetail from "./pages/ArtistDetail";
 
 const { BufferList } = require("bl");
 // https://www.npmjs.com/package/ipfs-http-client
@@ -247,9 +248,9 @@ function App(props) {
   }, [address, yourBalance]);
 
   /*
-  const addressFromENS = useResolveName(mainnetProvider, "austingriffith.eth");
-  console.log("🏷 Resolved austingriffith.eth as:",addressFromENS)
-  */
+    const addressFromENS = useResolveName(mainnetProvider, "austingriffith.eth");
+    console.log("🏷 Resolved austingriffith.eth as:",addressFromENS)
+    */
 
   //
   // 🧫 DEBUG 👨🏻‍🔬
@@ -328,7 +329,16 @@ function App(props) {
     }
   } else {
     networkDisplay = (
-      <div style={{ zIndex: -1, position: "absolute", right: 154, top: 28, padding: 16, color: targetNetwork.color }}>
+      <div
+        style={{
+          zIndex: -1,
+          position: "absolute",
+          right: 154,
+          top: 28,
+          padding: 16,
+          color: targetNetwork.color,
+        }}
+      >
         {targetNetwork.name}
       </div>
     );
@@ -528,7 +538,15 @@ function App(props) {
                       <Card
                         title={
                           <div>
-                            <span style={{ fontSize: 16, marginRight: 8 }}>#{id}</span> {item.name}
+                            <span
+                              style={{
+                                fontSize: 16,
+                                marginRight: 8,
+                              }}
+                            >
+                              #{id}
+                            </span>{" "}
+                            {item.name}
                           </div>
                         }
                       >
@@ -844,10 +862,13 @@ function App(props) {
             />
           </Route>
           <Route path={`/profile`}>
-            <Profile address={address}/>
+            <Profile address={address} />
+          </Route>
+          <Route path={`/artists/:id`}>
+            <ArtistDetail />
           </Route>
           <Route path={`/artists`}>
-            <Artists/>
+            <Artists />
           </Route>
         </Switch>
       </BrowserRouter>
@@ -915,20 +936,20 @@ function App(props) {
 
 /* eslint-disable */
 window.ethereum &&
-  window.ethereum.on("chainChanged", chainId => {
+window.ethereum.on("chainChanged", chainId => {
     web3Modal.cachedProvider &&
-      setTimeout(() => {
+    setTimeout(() => {
         window.location.reload();
-      }, 1);
-  });
+    }, 1);
+});
 
 window.ethereum &&
-  window.ethereum.on("accountsChanged", accounts => {
+window.ethereum.on("accountsChanged", accounts => {
     web3Modal.cachedProvider &&
-      setTimeout(() => {
+    setTimeout(() => {
         window.location.reload();
-      }, 1);
-  });
+    }, 1);
+});
 /* eslint-enable */
 
 export default App;
