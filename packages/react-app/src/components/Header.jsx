@@ -5,12 +5,8 @@ import React from "react";
 
 export default function Header() {
   return (
-    <a href="https://github.com/austintgriffith/scaffold-eth" target="_blank" rel="noopener noreferrer">
-      <PageHeader
-        title="🏗 scaffold-eth"
-        subTitle="🖼 Rarible Boost"
-        style={{ cursor: "pointer" }}
-      />
-    </a>
+    <PageHeader
+      title="NEA"
+    />
   );
 }
