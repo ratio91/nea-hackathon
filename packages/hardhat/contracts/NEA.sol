@@ -1,4 +1,4 @@
-pragma solidity >=0.6.0 <0.7.0;
+pragma solidity >=0.7.0 <0.9.0;
 pragma experimental ABIEncoderV2;
 //SPDX-License-Identifier: MIT
 
@@ -22,19 +22,27 @@ contract NEA is Ownable, ERC20, SuperAppBase {
   ISuperfluid private _host;
   //allows sending tokens to multiple recipients in a single transaction
   IInstantDistributionAgreementV1 private _ida;
+  uint64 _share_price;
+  uint256 _supply;
+  address _nea;
+  address _platform;
 
   constructor(
-    string name, 
-    string symbol, 
+    string memory name, 
+    string memory symbol, 
     uint256 supply,
+    uint64 share_price,
     address platform,
     ISuperToken cashToken,
     ISuperfluid host,
     IInstantDistributionAgreementV1 ida
-  ) ERC20(_name, symbol) {
+  ) public ERC20(name, symbol) {
 
     transferOwnership(platform);
-
+    _platform = platform;
+    _nea = msg.sender;
+    _supply = supply;
+    _share_price = share_price;
     _cashToken = cashToken;
     _host = host;
     _ida = ida;
@@ -52,18 +60,15 @@ contract NEA is Ownable, ERC20, SuperAppBase {
 
     _setupDecimals(0); // no decimals
 
-    _mint(msg.sender, _supply*0.9);
-    _mint(_platform, _supply*0.1)
+    uint total = 100;
+    uint platform_share = 90;
+    _mint(_nea, _supply * (platform_share/total));
+    _mint(_platform, _supply * ((total - platform_share)/total));
   }
 
   //is a function to MINT rarible NFTs neccessary?
 
-  function supportNEA() public payable {
-    //stream ERC777 to NEA
-    _issue()
-  }
-
-  function _issue(address beneficiary) internal {
+  function _issue(address beneficiary, uint256 amount) internal {
     uint256 currentAmount = balanceOf(beneficiary);
 
     // first try to do ERC20 mint
@@ -87,7 +92,8 @@ contract NEA is Ownable, ERC20, SuperAppBase {
     (uint256 actualCashAmount,) = _ida.calculateDistribution(
         _cashToken,
         address(this), INDEX_ID,
-        cashAmount);
+        cashAmount
+    );
 
     _cashToken.transferFrom(owner(), address(this), actualCashAmount);
 
@@ -104,19 +110,17 @@ contract NEA is Ownable, ERC20, SuperAppBase {
     );
   }
 
-  function buySharesOfNEA(uint64 _amount) external {
-      require(uint64(_amount) > minimumBid,"Amount must be higher than minumum bid");
-      require(seller != msg.sender,"You can not bid on your own auction");
-      require(highestBidder != msg.sender,"You are already the highest bidder");
-      require(stablecoinContract.transferFrom(msg.sender, address(this), _amount),"Transfer of bid amount in stablecoins failed");
-      require(status == auctionStatus.ACTIVE,"Auction not active"); 
+  function supportNEA(uint64 _amount) external payable {
+    require(uint64(_amount) >= _share_price,"Amount must be higher than minumum bid");
+    //stream ERC777 to NEA
+    _issue(msg.sender, msg.value);
   }
 
   fallback() external payable {
     // convert ETH to ETHx
 
     //distribute ETHx to the shareholders
-    _distribute()
+    _distribute(msg.value);
   }
 
 }

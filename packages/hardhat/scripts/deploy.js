@@ -9,16 +9,23 @@ const main = async () => {
 
   console.log("\n\n 📡 Deploying...\n");
 
+  //const host = await ethers.getContractAt('ISuperfluid', "0x22ff293e14F1EC3A09B137e9e06084AFd63adDF9");
+  //const cash_token = await ethers.getContractAt('ISuperToken', "0x5943F705aBb6834Cad767e6E4bB258Bc48D9C947");
+  //const ida = await ethers.getContractAt('IInstantDistributionAgreementV1', "0xfDdcdac21D64B639546f3Ce2868C7EF06036990c")
 
-  const yourCollectible = await deploy("YourCollectible") // <-- add in constructor args like line 19 vvvv
-  // const NFTHolder = await deploy("NFTHolder") // <-- add in constructor args like line 19 vvvv
+  const supply = 111111111111;
+  const share_price = 1;
 
-  //const yourContract = await ethers.getContractAt('YourContract', "0xaAC799eC2d00C013f1F11c37E654e59B0429DF6A") //<-- if you want to instantiate a version of a contract at a specific address!
-  //const secondContract = await deploy("SecondContract")
-
-  // const exampleToken = await deploy("ExampleToken")
-  // const examplePriceOracle = await deploy("ExamplePriceOracle")
-  // const smartContractWallet = await deploy("SmartContractWallet",[exampleToken.address,examplePriceOracle.address])
+  const neaFactory = await deploy(
+    "NEAFactory",
+    [
+      "0x22ff293e14F1EC3A09B137e9e06084AFd63adDF9",
+      "0x5943F705aBb6834Cad767e6E4bB258Bc48D9C947",
+      "0xfDdcdac21D64B639546f3Ce2868C7EF06036990c",
+      supply,
+      share_price
+    ]
+  )
 
   /*
   //If you want to send value to an address from the deployer
