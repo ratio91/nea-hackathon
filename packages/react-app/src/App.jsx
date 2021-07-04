@@ -865,7 +865,7 @@ function App(props) {
             <Profile address={address} neaFactory={writeContracts?.NEAFactory} />
           </Route>
           <Route path={`/artists/:id`}>
-            <ArtistDetail />
+            <ArtistDetail neaContract={writeContracts?.NEA} signer={userProvider.getSigner()} tx={tx} />
           </Route>
           <Route path={`/artists`}>
             <Artists />

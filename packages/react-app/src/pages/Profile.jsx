@@ -18,8 +18,11 @@ export default function Profile({ address, neaFactory }) {
   const onDeploySmartContract = async () => {
     if (!neaFactory) return;
     try {
-      const neaDeployedAtAddress = await neaFactory.deployNEA("test nea", "TN");
+      const tx = await neaFactory.deployNEA("test nea", "TN");
+      console.log(tx);
+      const neaDeployedAtAddress = tx.to;
       console.log(neaDeployedAtAddress);
+      // TODO: update contract address in the profile
     } catch (exception) {
       setError("Unable to deploy contract.");
       console.log(exception);
