@@ -40,7 +40,7 @@ import {
 } from "./hooks";
 import { matchSellOrder, prepareMatchingOrder } from "./rarible/createOrders";
 import Profile from "./pages/Profile";
-import Artists from "./pages/Artists";
+import ArtistsOverview from "./pages/ArtistsOverview";
 import ArtistDetail from "./pages/ArtistDetail";
 
 const { BufferList } = require("bl");
@@ -868,7 +868,7 @@ function App(props) {
             <ArtistDetail />
           </Route>
           <Route path={`/artists`}>
-            <Artists />
+            <ArtistsOverview />
           </Route>
         </Switch>
       </BrowserRouter>
