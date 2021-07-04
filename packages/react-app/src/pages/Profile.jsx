@@ -10,6 +10,7 @@ export default function Profile({ address, neaFactory }) {
   const { register, reset, control, handleSubmit, setValue } = useForm();
   const [date, setDate] = useState(new Date());
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
   const { profile, updateProfile, isLoading } = useProfileApi(address, reset, setDate);
   const onChangeDate = data => {
     setDate(data);
@@ -23,8 +24,10 @@ export default function Profile({ address, neaFactory }) {
       const neaDeployedAtAddress = tx.to;
       console.log(neaDeployedAtAddress);
       // TODO: update contract address in the profile
+      setMessage("The contract has been deployed!");
     } catch (exception) {
       setError("Unable to deploy contract.");
+      setMessage("");
       console.log(exception);
     }
   };
@@ -75,6 +78,7 @@ export default function Profile({ address, neaFactory }) {
               Deploy smart contract
             </Button>
             {error && <Alert severity="error">{error}</Alert>}
+            {message && <Alert severity="success">{message}</Alert>}
           </FormGroup>
         </form>
       </div>
