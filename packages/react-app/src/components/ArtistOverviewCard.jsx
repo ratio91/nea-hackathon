@@ -39,7 +39,16 @@ function ArtistOverviewCard({ artist }) {
           {artist.name}
         </Typography>
         <Typography variant="body2" color="textSecondary" component="p">
-          {artist.about}
+          {artist.biography}
+        </Typography>
+        <Typography variant="body2" color="textSecondary" component="p">
+          {artist.artStyle}
+        </Typography>
+        <Typography variant="body2" color="textSecondary" component="p">
+          {artist.dateOfBirth}
+        </Typography>
+        <Typography variant="body2" color="textSecondary" component="p">
+          {artist.id}
         </Typography>
       </CardContent>
       <CardActions className={classes.CardActionsLink}>
