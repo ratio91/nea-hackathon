@@ -862,7 +862,7 @@ function App(props) {
             />
           </Route>
           <Route path={`/profile`}>
-            <Profile address={address} />
+            <Profile address={address} neaFactory={writeContracts?.NEAFactory} />
           </Route>
           <Route path={`/artists/:id`}>
             <ArtistDetail />

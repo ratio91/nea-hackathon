@@ -4,14 +4,26 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/picker
 import DateFnsUtils from "@date-io/date-fns";
 import { useForm, Controller } from "react-hook-form";
 import { useProfileApi } from "../hooks";
+import { Alert } from "@material-ui/lab";
 
-export default function Profile({ address }) {
+export default function Profile({ address, neaFactory }) {
   const { register, reset, control, handleSubmit, setValue } = useForm();
   const [date, setDate] = useState(new Date());
+  const [error, setError] = useState("");
   const { profile, updateProfile, isLoading } = useProfileApi(address, reset, setDate);
   const onChangeDate = data => {
     setDate(data);
     setValue("dateOfBirth", data);
+  };
+  const onDeploySmartContract = async () => {
+    if (!neaFactory) return;
+    try {
+      const neaDeployedAtAddress = await neaFactory.deployNEA("test nea", "TN");
+      console.log(neaDeployedAtAddress);
+    } catch (exception) {
+      setError("Unable to deploy contract.");
+      console.log(exception);
+    }
   };
 
   if (isLoading) {
@@ -54,8 +66,12 @@ export default function Profile({ address }) {
               render={({ field }) => <TextField label="Art style" {...field} />}
             />
             <Button type="submit" variant="contained" color="primary">
-              Submit
+              Update profile
             </Button>
+            <Button type="button" variant="contained" color="secondary" onClick={onDeploySmartContract}>
+              Deploy smart contract
+            </Button>
+            {error && <Alert severity="error">{error}</Alert>}
           </FormGroup>
         </form>
       </div>
