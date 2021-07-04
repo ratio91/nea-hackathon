@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import { Alert } from "@material-ui/lab";
 
-export default function ArtistDetail({ neaContract, signer, tx }) {
+export default function ArtistDetail({ neaContract }) {
   const { id: address } = useParams();
   const { profile, isLoading } = useProfileApi(address);
   const [amount, setAmount] = useState();
@@ -24,12 +24,8 @@ export default function ArtistDetail({ neaContract, signer, tx }) {
       return;
     }
     console.log("On invest..");
-    tx(
-      signer.sendTransaction({
-        to: profile.contractAddress,
-        value: amount,
-      }),
-    );
+    const txResult = await contract.supportNEA(amount);
+    console.log(txResult);
     setError("");
     setMessage("Thanks for investing!");
   };

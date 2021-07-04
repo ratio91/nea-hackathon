@@ -248,9 +248,9 @@ function App(props) {
   }, [address, yourBalance]);
 
   /*
-    const addressFromENS = useResolveName(mainnetProvider, "austingriffith.eth");
-    console.log("🏷 Resolved austingriffith.eth as:",addressFromENS)
-    */
+      const addressFromENS = useResolveName(mainnetProvider, "austingriffith.eth");
+      console.log("🏷 Resolved austingriffith.eth as:",addressFromENS)
+      */
 
   //
   // 🧫 DEBUG 👨🏻‍🔬
@@ -862,10 +862,16 @@ function App(props) {
             />
           </Route>
           <Route path={`/profile`}>
-            <Profile address={address} neaFactory={writeContracts?.NEAFactory} />
+            <Profile
+              address={address}
+              neaFactoryContract={writeContracts?.NEAFactory}
+              neaContract={writeContracts?.NEA}
+              signer={userProvider.getSigner()}
+              tx={tx}
+            />
           </Route>
           <Route path={`/artists/:id`}>
-            <ArtistDetail neaContract={writeContracts?.NEA} signer={userProvider.getSigner()} tx={tx} />
+            <ArtistDetail neaContract={writeContracts?.NEA} />
           </Route>
           <Route path={`/artists`}>
             <ArtistsOverview />

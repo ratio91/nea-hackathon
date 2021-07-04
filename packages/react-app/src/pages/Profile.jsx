@@ -6,22 +6,25 @@ import { useForm, Controller } from "react-hook-form";
 import { useProfileApi } from "../hooks";
 import { Alert } from "@material-ui/lab";
 
-export default function Profile({ address, neaFactory }) {
+export default function Profile({ address, neaFactoryContract, neaContract, tx, signer}) {
   const { register, reset, control, handleSubmit, setValue } = useForm();
   const [date, setDate] = useState(new Date());
+  const [amount, setAmount] = useState();
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const { profile, updateProfile, isLoading } = useProfileApi(address, reset, setDate);
+  const contract = profile && profile.contractAddress ? neaContract.attach(profile.contractAddress) : null;
+
   const onChangeDate = data => {
     setDate(data);
     setValue("dateOfBirth", data);
   };
   const onDeploySmartContract = async () => {
-    if (!neaFactory) return;
+    if (!neaFactoryContract) return;
     try {
-      const tx = await neaFactory.deployNEA("test nea", "TN");
-      console.log(tx);
-      const neaDeployedAtAddress = tx.to;
+      const txResult = await neaFactoryContract.deployNEA("test nea", "TN");
+      console.log(txResult);
+      const neaDeployedAtAddress = txResult.to;
       console.log(neaDeployedAtAddress);
       // TODO: update contract address in the profile
       setMessage("The contract has been deployed!");
@@ -30,6 +33,22 @@ export default function Profile({ address, neaFactory }) {
       setMessage("");
       console.log(exception);
     }
+  };
+
+  const onDistribute = async () => {
+    if (!contract) {
+      setError("No artist contract has been deployed yet!");
+      return;
+    }
+    console.log("On distribute..");
+    tx(
+      signer.sendTransaction({
+        to: profile.contractAddress,
+        value: amount,
+      }),
+    );
+    setError("");
+    setMessage("Distribution completed!");
   };
 
   if (isLoading) {
@@ -76,6 +95,10 @@ export default function Profile({ address, neaFactory }) {
             </Button>
             <Button type="button" variant="contained" color="secondary" onClick={onDeploySmartContract}>
               Deploy smart contract
+            </Button>
+            <TextField label="Amount" type="number" value={amount} onChange={x => setAmount(x.data)} />
+            <Button onClick={onDistribute} variant="contained" color="primary">
+              Distribute
             </Button>
             {error && <Alert severity="error">{error}</Alert>}
             {message && <Alert severity="success">{message}</Alert>}
