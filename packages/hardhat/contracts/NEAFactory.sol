@@ -12,6 +12,7 @@ import {
 
 contract NEAFactory {
 
+  mapping(address => address) _identity;
   address _platform;
   uint256 _supply;
   uint64 _share_price;
@@ -34,6 +35,16 @@ contract NEAFactory {
     _ida = ida;
   }
 
+  function getIdentity(
+    address id
+  )
+  public
+  view
+  returns (address _NEA_address)
+  {
+    return (_identity[id]);
+  }
+
   function deployNEA(
     string memory name, 
     string memory symbol
@@ -41,6 +52,10 @@ contract NEAFactory {
   public
   returns (address _NEA_address)
   {
+    require(
+      _identity[msg.sender] == address(0), 
+      "NEA must not have more than 1 contract instance"
+    );
     NEA newArtist = new NEA(
       name, 
       symbol, 
@@ -51,6 +66,8 @@ contract NEAFactory {
       _host,
       _ida
     );
+    _identity[msg.sender] = address(newArtist);
+    return(address(newArtist));
   }
 
 }
