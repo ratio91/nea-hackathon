@@ -8,7 +8,7 @@ import { Alert } from "@material-ui/lab";
 export default function ArtistDetail({ neaContract }) {
   const { id: address } = useParams();
   const { profile, isLoading } = useProfileApi(address);
-  const [amount, setAmount] = useState();
+  const [amount, setAmount] = useState(0);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
@@ -16,7 +16,7 @@ export default function ArtistDetail({ neaContract }) {
     return <CircularProgress />;
   }
   const dateOfBirth = profile && profile.dateOfBirth ? profile.dateOfBirth.substr(0, 10) : "-";
-  const contract = profile && profile.contractAddress ? neaContract.attach(profile.contractAddress) : null;
+  const contract = profile && profile.neaContractAddress ? neaContract.attach(profile.neaContractAddress) : null;
 
   const onInvest = async () => {
     if (!contract) {
@@ -24,10 +24,19 @@ export default function ArtistDetail({ neaContract }) {
       return;
     }
     console.log("On invest..");
-    const txResult = await contract.supportNEA(amount);
-    console.log(txResult);
-    setError("");
-    setMessage("Thanks for investing!");
+    try {
+      const txResult = await contract.supportNEA(amount);
+      console.log(txResult);
+      setError("");
+      setMessage("Thanks for investing!");
+    } catch (e) {
+      setMessage("");
+      setError("Transaction failure.");
+    }
+  };
+
+  const onSetAmount = x => {
+    setAmount(parseFloat(x.target.value));
   };
 
   return (
@@ -36,7 +45,7 @@ export default function ArtistDetail({ neaContract }) {
       <p>Biography: {profile.biography}</p>
       <p>Date of birth: {dateOfBirth}</p>
       <p>Art style: {profile.artStyle}</p>
-      <TextField label="Amount" type="number" value={amount} onChange={x => setAmount(x.data)} />
+      <TextField label="Amount" type="number" onChange={onSetAmount} />
       <Button onClick={onInvest} variant="contained" color="primary">
         Invest
       </Button>

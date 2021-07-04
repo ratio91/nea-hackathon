@@ -6,14 +6,14 @@ import { useForm, Controller } from "react-hook-form";
 import { useProfileApi } from "../hooks";
 import { Alert } from "@material-ui/lab";
 
-export default function Profile({ address, neaFactoryContract, neaContract, tx, signer}) {
+export default function Profile({ address, neaFactoryContract, neaContract, tx, signer }) {
   const { register, reset, control, handleSubmit, setValue } = useForm();
   const [date, setDate] = useState(new Date());
   const [amount, setAmount] = useState();
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const { profile, updateProfile, isLoading } = useProfileApi(address, reset, setDate);
-  const contract = profile && profile.contractAddress ? neaContract.attach(profile.contractAddress) : null;
+  const contract = profile && profile.neaContractAddress ? neaContract.attach(profile.neaContractAddress) : null;
 
   const onChangeDate = data => {
     setDate(data);
@@ -26,7 +26,7 @@ export default function Profile({ address, neaFactoryContract, neaContract, tx, 
       console.log(txResult);
       const neaDeployedAtAddress = txResult.to;
       console.log(neaDeployedAtAddress);
-      // TODO: update contract address in the profile
+      await updateProfile({ ...profile, neaContractAddress: neaDeployedAtAddress });
       setMessage("The contract has been deployed!");
     } catch (exception) {
       setError("Unable to deploy contract.");
@@ -43,7 +43,7 @@ export default function Profile({ address, neaFactoryContract, neaContract, tx, 
     console.log("On distribute..");
     tx(
       signer.sendTransaction({
-        to: profile.contractAddress,
+        to: profile.neaContractAddress,
         value: amount,
       }),
     );
@@ -59,6 +59,12 @@ export default function Profile({ address, neaFactoryContract, neaContract, tx, 
       <div className="Box">
         <h1>Your profile</h1>
         <form onSubmit={handleSubmit(updateProfile)}>
+          <input
+            type="hidden"
+            name="neaContractAddress"
+            value={profile.neaContractAddress}
+            {...register("neaContractAddress")}
+          />
           <FormGroup>
             <Controller
               name="name"
@@ -93,13 +99,20 @@ export default function Profile({ address, neaFactoryContract, neaContract, tx, 
             <Button type="submit" variant="contained" color="primary">
               Update profile
             </Button>
-            <Button type="button" variant="contained" color="secondary" onClick={onDeploySmartContract}>
-              Deploy smart contract
-            </Button>
-            <TextField label="Amount" type="number" value={amount} onChange={x => setAmount(x.data)} />
-            <Button onClick={onDistribute} variant="contained" color="primary">
-              Distribute
-            </Button>
+            {profile.name && (
+              <>
+                {!profile.neaContractAddress && (
+                  <Button type="button" variant="contained" color="secondary" onClick={onDeploySmartContract}>
+                    Deploy smart contract
+                  </Button>
+                )}
+                {profile.neaContractAddress && <div>Your NEA contract is deployed at: {profile.neaContractAddress}</div>}
+                <TextField label="Amount" type="number" value={amount} onChange={x => setAmount(x.data)} />
+                <Button onClick={onDistribute} variant="contained" color="primary">
+                  Distribute
+                </Button>
+              </>
+            )}
             {error && <Alert severity="error">{error}</Alert>}
             {message && <Alert severity="success">{message}</Alert>}
           </FormGroup>
