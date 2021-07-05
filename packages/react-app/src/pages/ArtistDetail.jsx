@@ -5,8 +5,9 @@ import { useParams } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import { Alert } from "@material-ui/lab";
 import ArtistsArtworkOverview from "../components/ArtistsArtworkOverview";
+import { parseEther } from "@ethersproject/units";
 
-export default function ArtistDetail({ neaContract }) {
+export default function ArtistDetail({ neaContract, gasPrice }) {
   const { id: address } = useParams();
   const { profile, isLoading } = useProfileApi(address);
   const [amount, setAmount] = useState(0);
@@ -26,7 +27,11 @@ export default function ArtistDetail({ neaContract }) {
     }
     console.log("On invest..");
     try {
-      const txResult = await contract.supportNEA(amount);
+      const value = parseEther(amount.toString());
+      const txResult = await contract.supportNEA({
+        value: value,
+        gasLimit: Math.max(gasPrice / 100000000, 21000), // TODO: use a real limit
+      });
       console.log(txResult);
       setError("");
       setMessage("Thanks for investing!");
@@ -53,7 +58,6 @@ export default function ArtistDetail({ neaContract }) {
         </Button>
         {error && <Alert severity="error">{error}</Alert>}
         {message && <Alert severity="success">{message}</Alert>}
-
       </div>
 
       <ArtistsArtworkOverview />

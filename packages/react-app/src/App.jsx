@@ -872,7 +872,7 @@ function App(props) {
             />
           </Route>
           <Route path={`/artists/:id`}>
-            <ArtistDetail neaContract={writeContracts?.NEA} />
+            <ArtistDetail neaContract={writeContracts?.NEA} gasPrice={gasPrice} />
           </Route>
           <Route path={`/artists`}>
             <ArtistsOverview />
