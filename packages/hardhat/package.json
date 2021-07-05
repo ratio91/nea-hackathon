@@ -15,6 +15,7 @@
     "@nomiclabs/hardhat-etherscan": "^2.1.1",
     "@nomiclabs/hardhat-waffle": "^2.0.0",
     "@openzeppelin/contracts": "^3.2.0",
+    "@superfluid-finance/ethereum-contracts": "^1.0.0-rc.4",
     "@tenderly/hardhat-tenderly": "^1.0.10",
     "chai": "^4.2.0",
     "chalk": "^4.1.0",
@@ -27,7 +28,7 @@
   },
   "scripts": {
     "chain": "hardhat node",
-    "fork": "hardhat node --fork https://mainnet.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad",
+    "fork": "hardhat node --fork https://mainnet.infura.io/v3/d8cfc5852b0f46ac9157e6e39fc16ece",
     "test": "hardhat test --network hardhat",
     "compile": "hardhat compile",
     "deploy": "hardhat run scripts/deploy.js",
