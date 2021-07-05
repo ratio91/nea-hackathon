@@ -22,13 +22,11 @@ export default function Profile({ address, neaFactoryContract, neaContract, tx, 
   const onDeploySmartContract = async () => {
     if (!neaFactoryContract) return;
     try {
-      const transactionReceipt = await neaFactoryContract.deployNEA(
-        profile.name,
-        profile.name
-          .match(/\b(\w)/g)
-          .join("")
-          .toUpperCase(),
-      );
+      const tokenSymbol = profile.name
+        .match(/\b(\w)/g)
+        .join("")
+        .toUpperCase();
+      const transactionReceipt = await neaFactoryContract.deployNEA(tokenSymbol, tokenSymbol);
       await transactionReceipt.wait(1);
       console.log(transactionReceipt);
       const neaDeployedAtAddress = await neaFactoryContract.getIdentity(address);
@@ -62,6 +60,10 @@ export default function Profile({ address, neaFactoryContract, neaContract, tx, 
     );
     setError("");
     setMessage("Distribution completed!");
+  };
+
+  const onSetAmount = x => {
+    setAmount(parseFloat(x.target.value));
   };
 
   if (isLoading) {
@@ -122,7 +124,7 @@ export default function Profile({ address, neaFactoryContract, neaContract, tx, 
                 {profile.neaContractAddress && (
                   <div>Your NEA contract is deployed at: {profile.neaContractAddress}</div>
                 )}
-                <TextField label="Amount" type="number" value={amount} onChange={x => setAmount(x.data)} />
+                <TextField label="Amount" type="number" onChange={onSetAmount} />
                 <Button onClick={onDistribute} variant="contained" color="primary">
                   Distribute
                 </Button>
