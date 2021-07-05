@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hidden',
   },
   gridList: {
-    width: 500,
+    width: 800,
     height: "100vh",
   },
   gridListTile: {
@@ -80,7 +80,7 @@ export default function Artists() {
         color="primary"
         onChange={handleSearchInputChange}
       />
-      <GridList cellHeight={260} className={classes.gridList} cols={2}>
+      <GridList cellHeight={260} className={classes.gridList} cols={3}>
         {searchResult
           ? searchResult.map((artist, index) => (
               <GridListTile key={index} className={classes.gridListTile} cols={1}>

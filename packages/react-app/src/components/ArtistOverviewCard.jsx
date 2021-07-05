@@ -45,7 +45,7 @@ function ArtistOverviewCard({ artist }) {
           {artist.artStyle}
         </Typography>
         <Typography variant="body2" color="textSecondary" component="p">
-          {artist.dateOfBirth}
+          {artist.dateOfBirth.substr(0, 10)}
         </Typography>
         <Typography variant="body2" color="textSecondary" component="p">
           {artist.id}
