@@ -38,6 +38,7 @@
     "send": "hardhat send",
     "generate": "hardhat generate",
     "account": "hardhat account",
-    "mint": "hardhat run scripts/mint.js"
+    "mint": "hardhat run scripts/mint.js",
+    "createNEA": "hardhat run scripts/createNEA.js"
   }
 }
