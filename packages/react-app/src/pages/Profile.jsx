@@ -22,8 +22,9 @@ export default function Profile({ address, neaFactoryContract, neaContract, tx, 
   const onDeploySmartContract = async () => {
     if (!neaFactoryContract) return;
     try {
-      const txResult = await neaFactoryContract.deployNEA("test nea", "TN");
-      console.log(txResult);
+      const transactionReceipt = await neaFactoryContract.deployNEA("test nea", "TN");
+      await transactionReceipt.wait(1);
+      console.log(transactionReceipt);
       const neaDeployedAtAddress = await neaFactoryContract.getIdentity(address);
       console.log(neaDeployedAtAddress);
       if (neaDeployedAtAddress && !/^0x0+$/.test(neaDeployedAtAddress)) {
@@ -112,7 +113,9 @@ export default function Profile({ address, neaFactoryContract, neaContract, tx, 
                     Deploy smart contract
                   </Button>
                 )}
-                {profile.neaContractAddress && <div>Your NEA contract is deployed at: {profile.neaContractAddress}</div>}
+                {profile.neaContractAddress && (
+                  <div>Your NEA contract is deployed at: {profile.neaContractAddress}</div>
+                )}
                 <TextField label="Amount" type="number" value={amount} onChange={x => setAmount(x.data)} />
                 <Button onClick={onDistribute} variant="contained" color="primary">
                   Distribute
