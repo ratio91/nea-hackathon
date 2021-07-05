@@ -24,7 +24,7 @@ export default function Profile({ address, neaFactoryContract, neaContract, tx, 
     try {
       const txResult = await neaFactoryContract.deployNEA("test nea", "TN");
       console.log(txResult);
-      const neaDeployedAtAddress = txResult.to;
+      const neaDeployedAtAddress = await neaFactoryContract.getIdentity(address);
       console.log(neaDeployedAtAddress);
       await updateProfile({ ...profile, neaContractAddress: neaDeployedAtAddress });
       setMessage("The contract has been deployed!");

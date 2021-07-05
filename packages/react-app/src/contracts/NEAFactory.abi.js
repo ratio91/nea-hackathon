@@ -54,4 +54,23 @@ module.exports = [
     stateMutability: "nonpayable",
     type: "function",
   },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "id",
+        type: "address",
+      },
+    ],
+    name: "getIdentity",
+    outputs: [
+      {
+        internalType: "address",
+        name: "_NEA_address",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
 ];
