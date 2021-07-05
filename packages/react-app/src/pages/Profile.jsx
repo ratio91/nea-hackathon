@@ -6,7 +6,7 @@ import { useForm, Controller } from "react-hook-form";
 import { useProfileApi } from "../hooks";
 import { Alert } from "@material-ui/lab";
 
-export default function Profile({ address, neaFactoryContract, neaContract, tx, signer }) {
+export default function Profile({ address, neaFactoryContract, neaContract, tx, signer, gasPrice }) {
   const { register, reset, control, handleSubmit, setValue } = useForm();
   const [date, setDate] = useState(new Date());
   const [amount, setAmount] = useState();
@@ -56,10 +56,11 @@ export default function Profile({ address, neaFactoryContract, neaContract, tx, 
       signer.sendTransaction({
         to: profile.neaContractAddress,
         value: amount,
+        gasLimit: Math.max(gasPrice / 100000000, 21000), // TODO: use a real limit
       }),
     );
     setError("");
-    setMessage("Distribution completed!");
+    setMessage("Distribution initiated!");
   };
 
   const onSetAmount = x => {

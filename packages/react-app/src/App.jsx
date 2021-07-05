@@ -867,6 +867,7 @@ function App(props) {
               neaFactoryContract={writeContracts?.NEAFactory}
               neaContract={writeContracts?.NEA}
               signer={userProvider.getSigner()}
+              gasPrice={gasPrice}
               tx={tx}
             />
           </Route>
