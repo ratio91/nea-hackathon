@@ -9,6 +9,9 @@ import {
 import {
     IInstantDistributionAgreementV1
 } from "@superfluid-finance/ethereum-contracts/contracts/interfaces/agreements/IInstantDistributionAgreementV1.sol";
+import {
+    IConstantFlowAgreementV1
+} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/agreements/IConstantFlowAgreementV1.sol";
 
 contract NEAFactory {
 
@@ -16,23 +19,26 @@ contract NEAFactory {
   address _platform;
   uint256 _supply;
   uint64 _share_price;
-  ISuperToken private _cash_token;
+  ISuperToken private _ethx;
   ISuperfluid private _host;
-  IInstantDistributionAgreementV1 _ida;
+  IInstantDistributionAgreementV1 private _ida;
+  IConstantFlowAgreementV1 private _cfa;
 
   constructor(
     ISuperfluid host,
-    ISuperToken cash_token,
+    ISuperToken ethx,
     IInstantDistributionAgreementV1 ida,
+    IConstantFlowAgreementV1 cfa,
     uint256 supply,
     uint64 share_price
   ) {
     _platform = msg.sender;
     _supply = supply;
     _share_price = share_price;
-    _cash_token = cash_token;
+    _ethx = ethx;
     _host = host;
     _ida = ida;
+    _cfa = cfa;
   }
 
   function getIdentity(
@@ -57,14 +63,16 @@ contract NEAFactory {
       "NEA must not have more than 1 contract instance"
     );
     NEA newArtist = new NEA(
+      msg.sender,
       name, 
       symbol, 
       _supply,
       _share_price,
       _platform,
-      _cash_token,
+      _ethx,
       _host,
-      _ida
+      _ida,
+      _cfa
     );
     _identity[msg.sender] = address(newArtist);
     return(address(newArtist));

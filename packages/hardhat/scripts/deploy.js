@@ -13,15 +13,16 @@ const main = async () => {
   //const cash_token = await ethers.getContractAt('ISuperToken', "0x5943F705aBb6834Cad767e6E4bB258Bc48D9C947");
   //const ida = await ethers.getContractAt('IInstantDistributionAgreementV1', "0xfDdcdac21D64B639546f3Ce2868C7EF06036990c")
 
-  const supply = 111111111111;
+  const supply = 100;
   const share_price = 1;
 
   const neaFactory = await deploy(
     "NEAFactory",
     [
-      "0x22ff293e14F1EC3A09B137e9e06084AFd63adDF9",
-      "0x5943F705aBb6834Cad767e6E4bB258Bc48D9C947",
-      "0xfDdcdac21D64B639546f3Ce2868C7EF06036990c",
+      "0x22ff293e14F1EC3A09B137e9e06084AFd63adDF9", //host
+      "0x5943F705aBb6834Cad767e6E4bB258Bc48D9C947", //ethx
+      "0xfDdcdac21D64B639546f3Ce2868C7EF06036990c", //ida
+      "0xEd6BcbF6907D4feEEe8a8875543249bEa9D308E8", //cfa
       supply,
       share_price
     ]
