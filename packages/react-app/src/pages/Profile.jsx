@@ -22,7 +22,13 @@ export default function Profile({ address, neaFactoryContract, neaContract, tx, 
   const onDeploySmartContract = async () => {
     if (!neaFactoryContract) return;
     try {
-      const transactionReceipt = await neaFactoryContract.deployNEA("test nea", "TN");
+      const transactionReceipt = await neaFactoryContract.deployNEA(
+        profile.name,
+        profile.name
+          .match(/\b(\w)/g)
+          .join("")
+          .toUpperCase(),
+      );
       await transactionReceipt.wait(1);
       console.log(transactionReceipt);
       const neaDeployedAtAddress = await neaFactoryContract.getIdentity(address);
