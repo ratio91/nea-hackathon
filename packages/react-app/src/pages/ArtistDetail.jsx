@@ -41,18 +41,22 @@ export default function ArtistDetail({ neaContract }) {
   };
 
   return (
-    <div className="Box">
-      <h1>{profile.name}</h1>
-      <p>Biography: {profile.biography}</p>
-      <p>Date of birth: {dateOfBirth}</p>
-      <p>Art style: {profile.artStyle}</p>
-      <TextField label="Amount" type="number" onChange={onSetAmount} />
-      <Button onClick={onInvest} variant="contained" color="primary">
-        Invest
-      </Button>
-      {error && <Alert severity="error">{error}</Alert>}
-      {message && <Alert severity="success">{message}</Alert>}
+    <>
+      <div className="Box">
+        <h1>{profile.name}</h1>
+        <p>Biography: {profile.biography}</p>
+        <p>Date of birth: {dateOfBirth}</p>
+        <p>Art style: {profile.artStyle}</p>
+        <TextField label="Amount" type="number" onChange={onSetAmount} />
+        <Button onClick={onInvest} variant="contained" color="primary">
+          Invest
+        </Button>
+        {error && <Alert severity="error">{error}</Alert>}
+        {message && <Alert severity="success">{message}</Alert>}
+
+      </div>
+
       <ArtistsArtworkOverview />
-    </div>
+    </>
   );
 }
