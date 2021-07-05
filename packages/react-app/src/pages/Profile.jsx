@@ -26,8 +26,14 @@ export default function Profile({ address, neaFactoryContract, neaContract, tx, 
       console.log(txResult);
       const neaDeployedAtAddress = await neaFactoryContract.getIdentity(address);
       console.log(neaDeployedAtAddress);
-      await updateProfile({ ...profile, neaContractAddress: neaDeployedAtAddress });
-      setMessage("The contract has been deployed!");
+      if (neaDeployedAtAddress && !/^0x0+$/.test(neaDeployedAtAddress)) {
+        await updateProfile({ ...profile, neaContractAddress: neaDeployedAtAddress });
+        setMessage("The contract has been deployed!");
+      } else {
+        setError("Unable to deploy contract.");
+        setMessage("");
+        console.log("Invalid NEA contract address.");
+      }
     } catch (exception) {
       setError("Unable to deploy contract.");
       setMessage("");
