@@ -8,12 +8,17 @@ module.exports = [
       },
       {
         internalType: "contract ISuperToken",
-        name: "cash_token",
+        name: "ethx",
         type: "address",
       },
       {
         internalType: "contract IInstantDistributionAgreementV1",
         name: "ida",
+        type: "address",
+      },
+      {
+        internalType: "contract IConstantFlowAgreementV1",
+        name: "cfa",
         type: "address",
       },
       {
