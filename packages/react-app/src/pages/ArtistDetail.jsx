@@ -4,6 +4,7 @@ import { useProfileApi } from "../hooks";
 import { useParams } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import { Alert } from "@material-ui/lab";
+import ArtistsArtworkOverview from "../components/ArtistsArtworkOverview";
 
 export default function ArtistDetail({ neaContract }) {
   const { id: address } = useParams();
@@ -51,6 +52,7 @@ export default function ArtistDetail({ neaContract }) {
       </Button>
       {error && <Alert severity="error">{error}</Alert>}
       {message && <Alert severity="success">{message}</Alert>}
+      <ArtistsArtworkOverview />
     </div>
   );
 }
