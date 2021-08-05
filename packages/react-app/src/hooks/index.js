@@ -16,4 +16,3 @@ export { default as usePoller } from "./Poller";
 export { default as useResolveName } from "./ResolveName";
 export { default as useTokenList } from "./TokenList";
 export { default as useUserProvider } from "./UserProvider";
-export { default as useProfileApi } from "./ProfileApi";

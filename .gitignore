@@ -39,3 +39,8 @@ yarn-error.log*
 
 Website 2.0.pdf
 Website explore+profil.pdf
+
+# other
+*.zip
+*.log
+

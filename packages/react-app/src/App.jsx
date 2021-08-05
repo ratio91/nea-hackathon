@@ -39,9 +39,9 @@ import {
   useUserProvider,
 } from "./hooks";
 import { matchSellOrder, prepareMatchingOrder } from "./rarible/createOrders";
-import Profile from "./pages/Profile";
-import ArtistsOverview from "./pages/ArtistsOverview";
-import ArtistDetail from "./pages/ArtistDetail";
+import Profile from "./nea/pages/Profile";
+import ArtistsOverview from "./nea/pages/ArtistsOverview";
+import ArtistDetail from "./nea/pages/ArtistDetail";
 
 const { BufferList } = require("bl");
 // https://www.npmjs.com/package/ipfs-http-client
