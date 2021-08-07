@@ -1,29 +1,17 @@
 import { StaticJsonRpcProvider, Web3Provider } from "@ethersproject/providers";
-import { formatEther, parseEther } from "@ethersproject/units";
 import WalletConnectProvider from "@walletconnect/web3-provider";
-import { Alert, Button, Card, Col, Input, List, Menu, Row } from "antd";
+import { Alert, Menu} from "antd";
 import "antd/dist/antd.css";
 import { useUserAddress } from "eth-hooks";
 import React, { useCallback, useEffect, useState } from "react";
 import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
 import Web3Modal from "web3modal";
 import "../App.css";
-import {
-  Account,
-  Faucet,
-  GasGauge,
-  Header,
-  Ramp,
-  ThemeSwitch,
-} from "../components";
+import { Header, ThemeSwitch } from "../components";
 import { DAI_ABI, DAI_ADDRESS, INFURA_ID, MenuEntries, NETWORK, NETWORKS } from "../constants";
 import { Transactor } from "../helpers";
 import {
-  useBalance,
   useContractLoader,
-  useContractReader,
-  useEventListener,
-  useExchangePrice,
   useExternalContractLoader,
   useGasPrice,
   useOnBlock,
@@ -32,6 +20,7 @@ import {
 import Profile from "./pages/Profile";
 import ArtistsOverview from "./pages/ArtistsOverview";
 import ArtistDetail from "./pages/ArtistDetail";
+import { Footer } from "./Footer";
 
 /*
     Welcome to 🏗 scaffold-eth !
@@ -76,9 +65,6 @@ const localProviderUrlFromEnv = process.env.REACT_APP_PROVIDER ? process.env.REA
 if (DEBUG) console.log("🏠 Connecting to provider:", localProviderUrlFromEnv);
 const localProvider = new StaticJsonRpcProvider(localProviderUrlFromEnv);
 
-// 🔭 block explorer URL
-const blockExplorer = targetNetwork.blockExplorer;
-
 /*
   Web3 modal helps us "connect" external wallets:
 */
@@ -95,19 +81,10 @@ const web3Modal = new Web3Modal({
   },
 });
 
-const logoutOfWeb3Modal = async () => {
-  await web3Modal.clearCachedProvider();
-  setTimeout(() => {
-    window.location.reload();
-  }, 1);
-};
-
 function App(props) {
   const mainnetProvider = scaffoldEthProvider && scaffoldEthProvider._network ? scaffoldEthProvider : mainnetInfura;
 
   const [injectedProvider, setInjectedProvider] = useState();
-  /* 💵 This hook will get the price of ETH from 🦄 Uniswap: */
-  const price = useExchangePrice(targetNetwork, mainnetProvider);
 
   /* 🔥 This hook will get the price of Gas from ⛽️ EtherGasStation */
   const gasPrice = useGasPrice(targetNetwork, "fast");
@@ -123,15 +100,6 @@ function App(props) {
 
   // The transactor wraps transactions and provides notificiations
   const tx = Transactor(userProvider, gasPrice);
-
-  // Faucet Tx can be used to send funds from the faucet
-  const faucetTx = Transactor(localProvider, gasPrice);
-
-  // 🏗 scaffold-eth is full of handy hooks like this one to get your balance:
-  const yourLocalBalance = useBalance(localProvider, address);
-
-  // Just plug in different 🛰 providers to get your balance on different chains:
-  const yourMainnetBalance = useBalance(mainnetProvider, address);
 
   // Load in your local 📝 contract and read a value from it:
   const readContracts = useContractLoader(localProvider);
@@ -158,8 +126,6 @@ function App(props) {
       mainnetProvider &&
       address &&
       selectedChainId &&
-      yourLocalBalance &&
-      yourMainnetBalance &&
       readContracts &&
       writeContracts &&
       mainnetDAIContract
@@ -169,22 +135,11 @@ function App(props) {
       console.log("🏠 localChainId", localChainId);
       console.log("👩‍💼 selected address:", address);
       console.log("🕵🏻‍♂️ selectedChainId:", selectedChainId);
-      console.log("💵 yourLocalBalance", yourLocalBalance ? formatEther(yourLocalBalance) : "...");
-      console.log("💵 yourMainnetBalance", yourMainnetBalance ? formatEther(yourMainnetBalance) : "...");
       console.log("📝 readContracts", readContracts);
       console.log("🌍 DAI contract on mainnet:", mainnetDAIContract);
       console.log("🔐 writeContracts", writeContracts);
     }
-  }, [
-    mainnetProvider,
-    address,
-    selectedChainId,
-    yourLocalBalance,
-    yourMainnetBalance,
-    readContracts,
-    writeContracts,
-    mainnetDAIContract,
-  ]);
+  }, [mainnetProvider, address, selectedChainId, readContracts, writeContracts, mainnetDAIContract]);
 
   let networkDisplay = "";
   if (localChainId && selectedChainId && localChainId !== selectedChainId) {
@@ -257,36 +212,6 @@ function App(props) {
     setRoute(window.location.pathname);
   }, [setRoute]);
 
-  let faucetHint = "";
-  const faucetAvailable = localProvider && localProvider.connection && targetNetwork.name == "localhost";
-
-  const [faucetClicked, setFaucetClicked] = useState(false);
-  if (
-    !faucetClicked &&
-    localProvider &&
-    localProvider._network &&
-    localProvider._network.chainId == 31337 &&
-    yourLocalBalance &&
-    formatEther(yourLocalBalance) <= 0
-  ) {
-    faucetHint = (
-      <div style={{ padding: 16 }}>
-        <Button
-          type="primary"
-          onClick={() => {
-            faucetTx({
-              to: address,
-              value: parseEther("0.01"),
-            });
-            setFaucetClicked(true);
-          }}
-        >
-          💰 Grab funds from the faucet ⛽️
-        </Button>
-      </div>
-    );
-  }
-
   return (
     <div className="App">
       {/* ✏️ Edit the header and change the title to your project name */}
@@ -344,83 +269,37 @@ function App(props) {
         </Switch>
       </BrowserRouter>
 
+      <Footer
+        address={address}
+        localProvider={localProvider}
+        userProvider={userProvider}
+        mainnetProvider={mainnetProvider}
+        gasPrice={gasPrice}
+        loadWeb3Modal={loadWeb3Modal}
+        targetNetwork={targetNetwork}
+        web3Modal={web3Modal}
+      />
       <ThemeSwitch />
-
-      {/* 👨‍💼 Your account is in the top right with a wallet at connect options */}
-      <div style={{ position: "fixed", textAlign: "right", right: 0, top: 0, padding: 10 }}>
-        <Account
-          address={address}
-          localProvider={localProvider}
-          userProvider={userProvider}
-          mainnetProvider={mainnetProvider}
-          price={price}
-          web3Modal={web3Modal}
-          loadWeb3Modal={loadWeb3Modal}
-          logoutOfWeb3Modal={logoutOfWeb3Modal}
-          blockExplorer={blockExplorer}
-        />
-        {faucetHint}
-      </div>
-
-      {/* 🗺 Extra UI like gas price, eth price, faucet, and support: */}
-      <div style={{ position: "fixed", textAlign: "left", left: 0, bottom: 20, padding: 10 }}>
-        <Row align="middle" gutter={[4, 4]}>
-          <Col span={8}>
-            <Ramp price={price} address={address} networks={NETWORKS} />
-          </Col>
-
-          <Col span={8} style={{ textAlign: "center", opacity: 0.8 }}>
-            <GasGauge gasPrice={gasPrice} />
-          </Col>
-          <Col span={8} style={{ textAlign: "center", opacity: 1 }}>
-            <Button
-              onClick={() => {
-                window.open("https://t.me/joinchat/KByvmRe5wkR-8F_zz6AjpA");
-              }}
-              size="large"
-              shape="round"
-            >
-              <span style={{ marginRight: 8 }} role="img" aria-label="support">
-                💬
-              </span>
-              Support
-            </Button>
-          </Col>
-        </Row>
-
-        <Row align="middle" gutter={[4, 4]}>
-          <Col span={24}>
-            {
-              /*  if the local provider has a signer, let's show the faucet:  */
-              faucetAvailable ? (
-                <Faucet localProvider={localProvider} price={price} ensProvider={mainnetProvider} />
-              ) : (
-                ""
-              )
-            }
-          </Col>
-        </Row>
-      </div>
     </div>
   );
 }
 
 /* eslint-disable */
 window.ethereum &&
-window.ethereum.on("chainChanged", chainId => {
+  window.ethereum.on("chainChanged", chainId => {
     web3Modal.cachedProvider &&
-    setTimeout(() => {
+      setTimeout(() => {
         window.location.reload();
-    }, 1);
-});
+      }, 1);
+  });
 
 window.ethereum &&
-window.ethereum.on("accountsChanged", accounts => {
+  window.ethereum.on("accountsChanged", accounts => {
     web3Modal.cachedProvider &&
-    setTimeout(() => {
+      setTimeout(() => {
         window.location.reload();
-    }, 1);
-});
+      }, 1);
+  });
 /* eslint-enable */
 
 export default App;
