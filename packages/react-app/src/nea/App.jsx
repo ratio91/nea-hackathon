@@ -1,26 +1,22 @@
-import { StaticJsonRpcProvider, Web3Provider } from "@ethersproject/providers";
-import WalletConnectProvider from "@walletconnect/web3-provider";
-import { Alert, Menu} from "antd";
+import { StaticJsonRpcProvider } from "@ethersproject/providers";
+import { Alert, Menu } from "antd";
 import "antd/dist/antd.css";
 import { useUserAddress } from "eth-hooks";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
-import Web3Modal from "web3modal";
 import "../App.css";
 import { Header, ThemeSwitch } from "../components";
-import { DAI_ABI, DAI_ADDRESS, INFURA_ID, MenuEntries, NETWORK, NETWORKS } from "../constants";
+import { INFURA_ID, MenuEntries, NETWORK, NETWORKS } from "../constants";
 import { Transactor } from "../helpers";
-import {
-  useContractLoader,
-  useExternalContractLoader,
-  useGasPrice,
-  useOnBlock,
-  useUserProvider,
-} from "../hooks";
+import { useContractLoader, useGasPrice, useOnBlock, useUserProvider } from "../hooks";
 import Profile from "./pages/Profile";
 import ArtistsOverview from "./pages/ArtistsOverview";
 import ArtistDetail from "./pages/ArtistDetail";
 import { Footer } from "./Footer";
+import { useWeb3Modal } from "./hooks";
+import Web3Modal from "web3modal";
+import WalletConnectProvider from "@walletconnect/web3-provider";
+import {initWeb3Modal, web3Modal} from "./utils/web3ModalUtils";
 
 /*
     Welcome to 🏗 scaffold-eth !
@@ -65,26 +61,10 @@ const localProviderUrlFromEnv = process.env.REACT_APP_PROVIDER ? process.env.REA
 if (DEBUG) console.log("🏠 Connecting to provider:", localProviderUrlFromEnv);
 const localProvider = new StaticJsonRpcProvider(localProviderUrlFromEnv);
 
-/*
-  Web3 modal helps us "connect" external wallets:
-*/
-const web3Modal = new Web3Modal({
-  // network: "mainnet", // optional
-  cacheProvider: true, // optional
-  providerOptions: {
-    walletconnect: {
-      package: WalletConnectProvider, // required
-      options: {
-        infuraId: INFURA_ID,
-      },
-    },
-  },
-});
-
 function App(props) {
   const mainnetProvider = scaffoldEthProvider && scaffoldEthProvider._network ? scaffoldEthProvider : mainnetInfura;
 
-  const [injectedProvider, setInjectedProvider] = useState();
+  const { injectedProvider, logoutOfWeb3Modal, loadWeb3Modal } = useWeb3Modal(web3Modal);
 
   /* 🔥 This hook will get the price of Gas from ⛽️ EtherGasStation */
   const gasPrice = useGasPrice(targetNetwork, "fast");
@@ -101,16 +81,8 @@ function App(props) {
   // The transactor wraps transactions and provides notificiations
   const tx = Transactor(userProvider, gasPrice);
 
-  // Load in your local 📝 contract and read a value from it:
-  const readContracts = useContractLoader(localProvider);
-
   // If you want to make 🔐 write transactions to your contracts, use the userProvider:
   const writeContracts = useContractLoader(userProvider);
-
-  // EXTERNAL CONTRACT EXAMPLE:
-  //
-  // If you want to bring in the mainnet DAI contract it would look like:
-  const mainnetDAIContract = useExternalContractLoader(mainnetProvider, DAI_ADDRESS, DAI_ABI);
 
   // If you want to call a function on a new block
   useOnBlock(mainnetProvider, () => {
@@ -121,25 +93,15 @@ function App(props) {
   // 🧫 DEBUG 👨🏻‍🔬
   //
   useEffect(() => {
-    if (
-      DEBUG &&
-      mainnetProvider &&
-      address &&
-      selectedChainId &&
-      readContracts &&
-      writeContracts &&
-      mainnetDAIContract
-    ) {
+    if (DEBUG && mainnetProvider && address && selectedChainId && writeContracts) {
       console.log("_____________________________________ 🏗 scaffold-eth _____________________________________");
       console.log("🌎 mainnetProvider", mainnetProvider);
       console.log("🏠 localChainId", localChainId);
       console.log("👩‍💼 selected address:", address);
       console.log("🕵🏻‍♂️ selectedChainId:", selectedChainId);
-      console.log("📝 readContracts", readContracts);
-      console.log("🌍 DAI contract on mainnet:", mainnetDAIContract);
       console.log("🔐 writeContracts", writeContracts);
     }
-  }, [mainnetProvider, address, selectedChainId, readContracts, writeContracts, mainnetDAIContract]);
+  }, [mainnetProvider, address, selectedChainId, writeContracts]);
 
   let networkDisplay = "";
   if (localChainId && selectedChainId && localChainId !== selectedChainId) {
@@ -195,17 +157,6 @@ function App(props) {
       </div>
     );
   }
-
-  const loadWeb3Modal = useCallback(async () => {
-    const provider = await web3Modal.connect();
-    setInjectedProvider(new Web3Provider(provider));
-  }, [setInjectedProvider]);
-
-  useEffect(() => {
-    if (web3Modal.cachedProvider) {
-      loadWeb3Modal();
-    }
-  }, [loadWeb3Modal]);
 
   const [route, setRoute] = useState();
   useEffect(() => {
@@ -275,31 +226,16 @@ function App(props) {
         userProvider={userProvider}
         mainnetProvider={mainnetProvider}
         gasPrice={gasPrice}
-        loadWeb3Modal={loadWeb3Modal}
         targetNetwork={targetNetwork}
         web3Modal={web3Modal}
+        loadWeb3Modal={loadWeb3Modal}
+        logoutOfWeb3Modal={logoutOfWeb3Modal}
       />
       <ThemeSwitch />
     </div>
   );
 }
 
-/* eslint-disable */
-window.ethereum &&
-  window.ethereum.on("chainChanged", chainId => {
-    web3Modal.cachedProvider &&
-      setTimeout(() => {
-        window.location.reload();
-      }, 1);
-  });
-
-window.ethereum &&
-  window.ethereum.on("accountsChanged", accounts => {
-    web3Modal.cachedProvider &&
-      setTimeout(() => {
-        window.location.reload();
-      }, 1);
-  });
-/* eslint-enable */
+initWeb3Modal();
 
 export default App;

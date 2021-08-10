@@ -11,8 +11,9 @@ export const Footer = ({
   localProvider,
   userProvider,
   mainnetProvider,
-  web3Modal,
   loadWeb3Modal,
+  logoutOfWeb3Modal,
+  web3Modal,
   targetNetwork,
   gasPrice,
 }) => {
@@ -57,13 +58,6 @@ export const Footer = ({
       </div>
     );
   }
-
-  const logoutOfWeb3Modal = async () => {
-    await web3Modal.clearCachedProvider();
-    setTimeout(() => {
-      window.location.reload();
-    }, 1);
-  };
 
   return (
     <>
