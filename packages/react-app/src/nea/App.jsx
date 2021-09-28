@@ -209,6 +209,8 @@ function App(props) {
               signer={userProvider.getSigner()}
               gasPrice={gasPrice}
               tx={tx}
+              web3Modal={web3Modal}
+              loadWeb3Modal={loadWeb3Modal}
             />
           </Route>
           <Route path={`/artists/:id`}>
